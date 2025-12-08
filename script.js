@@ -569,63 +569,116 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Contact Form Handling
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+// Contact Form Handling with EmailJS
+(function() {
+    'use strict';
     
-    // Get form data
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        service: document.getElementById('service').value,
-        message: document.getElementById('message').value
-    };
+    function setupContactForm() {
+        const form = document.getElementById('contactForm');
+        if (!form) {
+            console.error('Contact form not found');
+            return;
+        }
+        
+        // Remove any existing submit handlers
+        const newForm = form.cloneNode(true);
+        form.parentNode.replaceChild(newForm, form);
+        
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            
+            console.log('=== FORM SUBMISSION STARTED ===');
+            
+            if (typeof emailjs === 'undefined') {
+                console.error('EmailJS is not loaded!');
+                alert('Email service not available. Please refresh the page.');
+                return false;
+            }
+            
+            if (typeof emailjs.send !== 'function') {
+                console.error('EmailJS.send is not a function!');
+                alert('Email service error. Please refresh the page.');
+                return false;
+            }
+            
+            const templateParams = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: (document.getElementById('phone').value || 'Not provided').trim(),
+                service: (document.getElementById('service').value || 'Not specified').trim(),
+                message: document.getElementById('message').value.trim()
+            };
+            
+            console.log('Template params:', templateParams);
+            
+            const btn = contactForm.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            
+            // Remove old messages
+            const oldMsg = contactForm.querySelector('.form-success, .form-error');
+            if (oldMsg) oldMsg.remove();
+            
+            console.log('Calling emailjs.send...');
+            console.log('Service ID: service_h5il5h7');
+            console.log('Template ID: template_9tgd17r');
+            
+            emailjs.send('service_h5il5h7', 'template_9tgd17r', templateParams)
+                .then(function(response) {
+                    console.log('=== EMAILJS SUCCESS ===');
+                    console.log('Response:', response);
+                    console.log('Status:', response.status);
+                    console.log('Text:', response.text);
+                    
+                    if (response.status === 200) {
+                        const msg = document.createElement('div');
+                        msg.className = 'form-success';
+                        msg.style.cssText = 'background: #4ecdc4; color: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 500;';
+                        msg.textContent = 'Thank you! Your message has been sent. We\'ll get back to you soon!';
+                        contactForm.appendChild(msg);
+                        contactForm.reset();
+                        btn.disabled = false;
+                        btn.textContent = originalText;
+                        setTimeout(function() { msg.remove(); }, 5000);
+                    } else {
+                        throw new Error('Unexpected status: ' + response.status);
+                    }
+                })
+                .catch(function(error) {
+                    console.error('=== EMAILJS ERROR ===');
+                    console.error('Full error:', error);
+                    console.error('Status:', error.status);
+                    console.error('Text:', error.text);
+                    console.error('Message:', error.message);
+                    
+                    const msg = document.createElement('div');
+                    msg.className = 'form-error';
+                    msg.style.cssText = 'background: #e74c3c; color: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 500;';
+                    msg.textContent = 'Error: ' + (error.text || error.message || 'Unknown error');
+                    contactForm.appendChild(msg);
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                    setTimeout(function() { msg.remove(); }, 8000);
+                });
+            
+            return false;
+        });
+        
+        console.log('Contact form handler attached successfully');
+    }
     
-    // Here you would typically send this to a server
-    // For now, we'll just show a success message
-    console.log('Form submitted:', formData);
-    
-    // Show success message
-    const successMessage = document.createElement('div');
-    successMessage.className = 'form-success';
-    successMessage.style.cssText = `
-        background: #4ecdc4;
-        color: white;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-top: 1rem;
-        text-align: center;
-        font-weight: 500;
-    `;
-    successMessage.textContent = 'Thank you! Your message has been sent. We\'ll get back to you soon!';
-    
-    contactForm.appendChild(successMessage);
-    
-    // Reset form
-    contactForm.reset();
-    
-    // Remove success message after 5 seconds
-    setTimeout(() => {
-        successMessage.remove();
-    }, 5000);
-    
-    // In production, you would send this data to your server:
-    // fetch('/api/contact', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(formData)
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     // Handle success
-    // })
-    // .catch(error => {
-    //     // Handle error
-    // });
-});
+    // Wait for page to fully load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupContactForm);
+    } else {
+        // Wait a bit for EmailJS to initialize
+        setTimeout(setupContactForm, 500);
+    }
+})();
 
 // Intersection Observer for fade-in animations
 const observerOptions = {
