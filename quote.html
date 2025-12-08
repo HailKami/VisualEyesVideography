@@ -504,24 +504,151 @@
             }
         });
 
-        // Quote calculation logic
+        // Quote calculation logic with requirements analysis
         function calculateQuote(formData) {
             const serviceType = formData.serviceType;
             const hours = parseFloat(formData.hours) || 0;
             const complexity = formData.complexity;
             const budget = formData.budget;
+            const requirements = (formData.requirements || '').toLowerCase();
             
             let basePrice = 0;
             let breakdown = [];
             
+            // Analyze requirements for additional services/equipment
+            const hasMultipleCameras = requirements.includes('multiple camera') || 
+                                       requirements.includes('multi-camera') ||
+                                       requirements.includes('2 camera') ||
+                                       requirements.includes('3 camera') ||
+                                       requirements.includes('4 camera') ||
+                                       requirements.includes('two camera') ||
+                                       requirements.includes('three camera');
+            const hasGraphics = requirements.includes('graphics') || 
+                               requirements.includes('overlay') ||
+                               requirements.includes('lower third') ||
+                               requirements.includes('title') ||
+                               requirements.includes('logo');
+            const hasMultiplePlatforms = requirements.includes('multiple platform') ||
+                                         requirements.includes('multi-platform') ||
+                                         (requirements.includes('youtube') && requirements.includes('facebook')) ||
+                                         (requirements.includes('stream') && requirements.includes('platform'));
+            const hasRecording = requirements.includes('record') || 
+                                requirements.includes('recording') ||
+                                requirements.includes('archive');
+            const hasDrone = requirements.includes('drone') || 
+                            requirements.includes('aerial');
+            const hasLiveGraphics = requirements.includes('live graphics') ||
+                                   requirements.includes('real-time graphics');
+            const hasStreaming = requirements.includes('stream') || 
+                               requirements.includes('streaming') ||
+                               requirements.includes('live');
+            
             // Base pricing by service type
-            if (serviceType === 'event') {
+            if (serviceType === 'live-stream') {
+                // Live streams need higher base rate - minimum $250/hour
+                const baseHourlyRate = 250;
+                const minHours = Math.max(hours, 2); // Minimum 2 hours
+                basePrice = baseHourlyRate * minHours;
+                
+                breakdown.push({
+                    item: `Live Stream Production (${minHours} hours)`,
+                    rate: `$${baseHourlyRate}/hour`,
+                    amount: basePrice
+                });
+                
+                // Add setup fee for live streams
+                const setupFee = 500;
+                basePrice += setupFee;
+                breakdown.push({
+                    item: 'Live Stream Setup & Equipment',
+                    rate: 'Base setup fee',
+                    amount: setupFee
+                });
+                
+                // Multiple cameras add-on
+                if (hasMultipleCameras) {
+                    const cameraFee = 200 * minHours; // $200/hour per additional camera
+                    basePrice += cameraFee;
+                    breakdown.push({
+                        item: 'Multiple Camera Setup',
+                        rate: '$200/hour per additional camera',
+                        amount: cameraFee
+                    });
+                }
+                
+                // Graphics/overlays add-on
+                if (hasGraphics || hasLiveGraphics) {
+                    const graphicsFee = 300;
+                    basePrice += graphicsFee;
+                    breakdown.push({
+                        item: 'Live Graphics & Overlays',
+                        rate: 'One-time fee',
+                        amount: graphicsFee
+                    });
+                }
+                
+                // Multiple platform streaming
+                if (hasMultiplePlatforms) {
+                    const platformFee = 150;
+                    basePrice += platformFee;
+                    breakdown.push({
+                        item: 'Multi-Platform Streaming',
+                        rate: 'Additional platform',
+                        amount: platformFee
+                    });
+                }
+                
+                // Recording/archiving add-on
+                if (hasRecording) {
+                    const recordingFee = 100;
+                    basePrice += recordingFee;
+                    breakdown.push({
+                        item: 'Recording & Archive',
+                        rate: 'One-time fee',
+                        amount: recordingFee
+                    });
+                }
+                
+                // Drone add-on for live streams
+                if (hasDrone) {
+                    const droneFee = 500;
+                    basePrice += droneFee;
+                    breakdown.push({
+                        item: 'Aerial/Drone Coverage',
+                        rate: 'One-time fee',
+                        amount: droneFee
+                    });
+                }
+                
+            } else if (serviceType === 'event') {
                 basePrice = 150 * hours; // $150/hour
                 breakdown.push({
                     item: `Event Videography (${hours} hours)`,
                     rate: `$${150}/hour`,
                     amount: basePrice
                 });
+                
+                // Check for additional requirements
+                if (hasMultipleCameras) {
+                    const cameraFee = 100 * hours;
+                    basePrice += cameraFee;
+                    breakdown.push({
+                        item: 'Multiple Camera Coverage',
+                        rate: '$100/hour per additional camera',
+                        amount: cameraFee
+                    });
+                }
+                
+                if (hasDrone) {
+                    const droneFee = 400;
+                    basePrice += droneFee;
+                    breakdown.push({
+                        item: 'Aerial/Drone Coverage',
+                        rate: 'One-time fee',
+                        amount: droneFee
+                    });
+                }
+                
             } else if (serviceType === 'music-video') {
                 basePrice = 1000 * hours; // $1000 per location
                 breakdown.push({
@@ -529,6 +656,18 @@
                     rate: `$${1000}/location`,
                     amount: basePrice
                 });
+                
+                // Music videos often need multiple cameras
+                if (hasMultipleCameras || !requirements.includes('single camera')) {
+                    const cameraFee = 500;
+                    basePrice += cameraFee;
+                    breakdown.push({
+                        item: 'Multi-Camera Production',
+                        rate: 'Standard for music videos',
+                        amount: cameraFee
+                    });
+                }
+                
             } else if (serviceType === 'commercial') {
                 // Commercial pricing is more complex - base on hours and complexity
                 const hourlyRate = complexity === 'simple' ? 200 : 
@@ -551,6 +690,7 @@
                     rate: 'Base fee',
                     amount: productionFee
                 });
+                
             } else if (serviceType === 'wedding') {
                 basePrice = 150 * Math.max(hours, 8); // Minimum 8 hours for weddings
                 breakdown.push({
@@ -558,14 +698,40 @@
                     rate: `$${150}/hour`,
                     amount: basePrice
                 });
+                
+                // Weddings typically include multiple cameras
+                if (!requirements.includes('single camera')) {
+                    const cameraFee = 300;
+                    basePrice += cameraFee;
+                    breakdown.push({
+                        item: 'Multi-Camera Coverage',
+                        rate: 'Standard wedding package',
+                        amount: cameraFee
+                    });
+                }
+                
             } else {
-                // Other services - use event rate as base
-                basePrice = 150 * Math.max(hours, 2);
+                // Other services - competitive pricing based on requirements
+                const baseHourlyRate = 150;
+                const minHours = Math.max(hours, 2);
+                basePrice = baseHourlyRate * minHours;
+                
                 breakdown.push({
-                    item: `${serviceType.charAt(0).toUpperCase() + serviceType.slice(1).replace('-', ' ')} (${hours} hours)`,
-                    rate: `$${150}/hour`,
+                    item: `${serviceType.charAt(0).toUpperCase() + serviceType.slice(1).replace('-', ' ')} (${minHours} hours)`,
+                    rate: `$${baseHourlyRate}/hour`,
                     amount: basePrice
                 });
+                
+                // Add-ons based on requirements
+                if (hasMultipleCameras) {
+                    const cameraFee = 100 * minHours;
+                    basePrice += cameraFee;
+                    breakdown.push({
+                        item: 'Multiple Camera Setup',
+                        rate: '$100/hour per additional camera',
+                        amount: cameraFee
+                    });
+                }
             }
             
             // Complexity multipliers
@@ -588,22 +754,31 @@
             
             basePrice *= complexityMultiplier;
             
-            // Add editing/post-production (if applicable)
+            // Add editing/post-production (if applicable and not live stream)
             let editingFee = 0;
-            if (serviceType === 'commercial' || serviceType === 'music-video') {
-                editingFee = basePrice * 0.3; // 30% of production cost
-                breakdown.push({
-                    item: 'Editing & Post-Production',
-                    rate: '30% of production',
-                    amount: editingFee
-                });
-            } else if (serviceType === 'wedding') {
-                editingFee = basePrice * 0.25; // 25% for weddings
-                breakdown.push({
-                    item: 'Editing & Post-Production',
-                    rate: '25% of production',
-                    amount: editingFee
-                });
+            if (serviceType !== 'live-stream') {
+                if (serviceType === 'commercial' || serviceType === 'music-video') {
+                    editingFee = basePrice * 0.3; // 30% of production cost
+                    breakdown.push({
+                        item: 'Editing & Post-Production',
+                        rate: '30% of production',
+                        amount: editingFee
+                    });
+                } else if (serviceType === 'wedding') {
+                    editingFee = basePrice * 0.25; // 25% for weddings
+                    breakdown.push({
+                        item: 'Editing & Post-Production',
+                        rate: '25% of production',
+                        amount: editingFee
+                    });
+                } else if (requirements.includes('edit') || requirements.includes('editing')) {
+                    editingFee = basePrice * 0.2; // 20% for other services with editing
+                    breakdown.push({
+                        item: 'Editing & Post-Production',
+                        rate: '20% of production',
+                        amount: editingFee
+                    });
+                }
             }
             
             basePrice += editingFee;
@@ -644,6 +819,20 @@
             // Ensure commercial quotes stay within range
             if (serviceType === 'commercial') {
                 basePrice = Math.max(1000, Math.min(30000, basePrice));
+            }
+            
+            // Ensure live streams are competitively priced (minimum $1000 for 4 hours)
+            if (serviceType === 'live-stream' && hours >= 4) {
+                const minimumPrice = 1000;
+                if (basePrice < minimumPrice) {
+                    const adjustment = minimumPrice - basePrice;
+                    basePrice = minimumPrice;
+                    breakdown.push({
+                        item: 'Minimum Service Fee',
+                        rate: 'Competitive pricing',
+                        amount: adjustment
+                    });
+                }
             }
             
             return {
