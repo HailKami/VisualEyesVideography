@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Wedding videography and photography tips, guides, and insights for St. Thomas, Virgin Islands. Expert advice from Visual Eyes Videography.">
+    <meta name="keywords" content="wedding tips St. Thomas, videography blog, wedding planning Virgin Islands, destination wedding guide USVI">
+    <meta name="author" content="Jordan Petty - Visual Eyes Videography">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Blog | Visual Eyes Videography - St. Thomas Wedding Tips & Guides">
+    <meta property="og:description" content="Expert wedding videography and photography tips for St. Thomas, Virgin Islands">
+    <meta property="og:url" content="https://visualeyesvideography.com/blog.html">
+    <meta property="og:type" content="website">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://visualeyesvideography.com/blog.html">
+    
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="PoWjmVArGUNXVXPUl8vie8-j5ZVLfIkH3HauMtjx0pI" />
+    
+    <title>Blog | Visual Eyes Videography - St. Thomas Wedding Tips & Guides</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        .blog-hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            text-align: center;
+        }
+        .blog-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .blog-hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 4rem 0;
+        }
+        .blog-card {
+            background: var(--bg-white);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .blog-card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        .blog-card-content {
+            padding: 2rem;
+        }
+        .blog-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .blog-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        .blog-card-date {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .blog-card-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .blog-card-link:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <img src="logo.png" alt="Visual Eyes Videography" class="logo-img">
+                    <span class="logo-text">Visual Eyes Videography</span>
+                </a>
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="index.html#about" class="nav-link">About</a></li>
+                    <li><a href="index.html#services" class="nav-link">Services</a></li>
+                    <li><a href="index.html#portfolio" class="nav-link">Portfolio</a></li>
+                    <li><a href="events.html" class="nav-link">Events</a></li>
+                    <li><a href="blog.html" class="nav-link active">Blog</a></li>
+                    <li><a href="quote.html" class="nav-link">Request Quote</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Hero -->
+    <section class="blog-hero">
+        <div class="container">
+            <h1>Wedding Tips & Guides</h1>
+            <p>Expert advice on wedding videography, photography, and planning in St. Thomas, Virgin Islands</p>
+        </div>
+    </section>
+
+    <!-- Blog Posts Grid -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="blog-grid">
+                <!-- Blog Post 1 -->
+                <article class="blog-card">
+                    <div class="blog-card-image">💒</div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-date">January 27, 2025</div>
+                        <h3>Best Wedding Venues in St. Thomas, Virgin Islands</h3>
+                        <p>Discover the most stunning wedding venues in St. Thomas from a videographer's perspective. Learn about lighting, best filming times, and what makes each location perfect for your special day.</p>
+                        <a href="blog-best-wedding-venues-st-thomas.html" class="blog-card-link">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="blog-card">
+                    <div class="blog-card-image">🎥</div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-date">January 27, 2025</div>
+                        <h3>How to Choose a Wedding Videographer in the Virgin Islands</h3>
+                        <p>Essential tips for selecting the perfect wedding videographer for your St. Thomas destination wedding. Learn what questions to ask, what to look for, and why local knowledge matters.</p>
+                        <a href="blog-choose-wedding-videographer-virgin-islands.html" class="blog-card-link">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3 -->
+                <article class="blog-card">
+                    <div class="blog-card-image">📸</div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-date">January 27, 2025</div>
+                        <h3>Wedding Photography vs Videography: Do You Need Both?</h3>
+                        <p>Understanding the difference between wedding photography and videography, and whether you need both for your St. Thomas wedding. Expert insights from a professional videographer.</p>
+                        <a href="blog-photography-vs-videography.html" class="blog-card-link">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 4 -->
+                <article class="blog-card">
+                    <div class="blog-card-image">✈️</div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-date">January 27, 2025</div>
+                        <h3>Destination Wedding Planning Guide: St. Thomas, Virgin Islands</h3>
+                        <p>Complete guide to planning your destination wedding in St. Thomas. From permits to weather considerations, get expert advice for your perfect Virgin Islands wedding.</p>
+                        <a href="blog-destination-wedding-planning-st-thomas.html" class="blog-card-link">Read More →</a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 5 -->
+                <article class="blog-card">
+                    <div class="blog-card-image">📱</div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-date">January 27, 2025</div>
+                        <h3>Top Instagrammable Spots in St. Thomas for Wedding Photos</h3>
+                        <p>Discover the most photogenic locations in St. Thomas for your wedding photos. From Magens Bay to historic Charlotte Amalie, find the perfect backdrop for your special day.</p>
+                        <a href="blog-instagrammable-spots-st-thomas.html" class="blog-card-link">Read More →</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Visual Eyes Videography</h3>
+                    <p>Your Vision Becomes Reality</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#services">Services</a>
+                    <a href="index.html#portfolio">Portfolio</a>
+                    <a href="events.html">Events</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="quote.html">Request Quote</a>
+                    <a href="index.html#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Visual Eyes Videography. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
