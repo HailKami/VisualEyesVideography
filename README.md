@@ -1,6 +1,6 @@
-# Visual Eyes Videography Website
+# VisualEyes Videography Website
 
-A modern, professional website for Visual Eyes Videography - Your Vision Becomes Reality.
+A modern, professional website for VisualEyes Videography - Your Vision Becomes Reality.
 
 ## Features
 
@@ -140,11 +140,11 @@ Upload all files via FTP to your web hosting provider.
 ## Credits
 
 - Fonts: Google Fonts (Inter & Playfair Display)
-- Design: Custom design for Visual Eyes Videography
+- Design: Custom design for VisualEyes Videography
 
 ## License
 
-© 2024 Visual Eyes Videography. All rights reserved.
+© 2024 VisualEyes Videography. All rights reserved.
 
 ## Support
 
