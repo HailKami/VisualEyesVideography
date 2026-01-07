@@ -148,7 +148,7 @@ const realEstateVideos = [
 
 // Music Video Gallery - Video data (titles will be fetched from YouTube)
 const musicVideos = [
-    { id: 'z6gDlDbYMc0', url: 'https://www.youtube.com/watch?v=z6gDlDbYMc0', song: 'Loading...', artist: '' },
+    { id: 's8hkedOmvZ8', url: 'https://www.youtube.com/watch?v=s8hkedOmvZ8', song: 'Loading...', artist: '' },
     { id: 'qQM0r7xCBzI', url: 'https://www.youtube.com/watch?v=qQM0r7xCBzI', song: 'Loading...', artist: '' },
     { id: 'XbxJbqS_0f0', url: 'https://www.youtube.com/watch?v=XbxJbqS_0f0', song: 'Loading...', artist: '' },
     { id: 'wUW9kOgh-i4', url: 'https://www.youtube.com/watch?v=wUW9kOgh-i4', song: 'Loading...', artist: '' },
@@ -161,8 +161,7 @@ const musicVideos = [
     { id: 'rsqELc75x3o', url: 'https://www.youtube.com/watch?v=rsqELc75x3o', song: 'Loading...', artist: '' },
     { id: 'nl4wDLtyyb8', url: 'https://www.youtube.com/watch?v=nl4wDLtyyb8', song: 'Loading...', artist: '' },
     { id: '90jQUHzYB4g', url: 'https://www.youtube.com/watch?v=90jQUHzYB4g', song: 'Loading...', artist: '' },
-    { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' },
-    { id: 's8hkedOmvZ8', url: 'https://www.youtube.com/watch?v=s8hkedOmvZ8', song: 'Loading...', artist: '' }
+    { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' }
 ];
 
 const musicVideoIds = musicVideos.map(v => v.id);
