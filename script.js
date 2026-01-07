@@ -162,7 +162,7 @@ const musicVideos = [
     { id: 'nl4wDLtyyb8', url: 'https://www.youtube.com/watch?v=nl4wDLtyyb8', song: 'Loading...', artist: '' },
     { id: '90jQUHzYB4g', url: 'https://www.youtube.com/watch?v=90jQUHzYB4g', song: 'Loading...', artist: '' },
     { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' },
-    { id: '8jJGprMuCxM', url: 'https://www.youtube.com/watch?v=8jJGprMuCxM', song: 'Loading...', artist: '' }
+    { id: 's8hkedOmvZ8', url: 'https://www.youtube.com/watch?v=s8hkedOmvZ8', song: 'Loading...', artist: '' }
 ];
 
 const musicVideoIds = musicVideos.map(v => v.id);
