@@ -301,6 +301,7 @@
                             <option value="commercial">Commercial</option>
                             <option value="wedding">Wedding</option>
                             <option value="real-estate">Real Estate</option>
+                            <option value="drone">Drone Videography</option>
                             <option value="short-film">Short Film</option>
                             <option value="documentary">Documentary</option>
                             <option value="interview">Interview</option>
@@ -619,6 +620,18 @@
                         amount: droneFee
                     });
                 }
+                
+            } else if (serviceType === 'drone') {
+                // Drone videography - $1000/hour, minimum $1000
+                const hourlyRate = 1000;
+                const minHours = Math.max(hours, 1); // Minimum 1 hour
+                basePrice = hourlyRate * minHours;
+                
+                breakdown.push({
+                    item: `Drone Videography (${minHours} hour${minHours > 1 ? 's' : ''})`,
+                    rate: `$${hourlyRate}/hour`,
+                    amount: basePrice
+                });
                 
             } else if (serviceType === 'event') {
                 basePrice = 150 * hours; // $150/hour
