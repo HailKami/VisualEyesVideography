@@ -146,9 +146,13 @@ const realEstateVideos = [
     { id: 'Xw4RXEQ7PBs', url: 'https://www.youtube.com/watch?v=Xw4RXEQ7PBs', song: 'Loading...', artist: '' }
 ];
 
+// Live Stream Videos - Video data (titles will be fetched from YouTube)
+const liveStreamVideos = [
+    { id: 'TzTGYkGFvOg', url: 'https://youtu.be/TzTGYkGFvOg?si=XbYrLG4RIbsYAHVZ', song: 'Loading...', artist: '' }
+];
+
 // Music Video Gallery - Video data (titles will be fetched from YouTube)
 const musicVideos = [
-    { id: 's8hkedOmvZ8', url: 'https://www.youtube.com/watch?v=s8hkedOmvZ8', song: 'Loading...', artist: '' },
     { id: 'qQM0r7xCBzI', url: 'https://www.youtube.com/watch?v=qQM0r7xCBzI', song: 'Loading...', artist: '' },
     { id: 'XbxJbqS_0f0', url: 'https://www.youtube.com/watch?v=XbxJbqS_0f0', song: 'Loading...', artist: '' },
     { id: 'wUW9kOgh-i4', url: 'https://www.youtube.com/watch?v=wUW9kOgh-i4', song: 'Loading...', artist: '' },
@@ -161,8 +165,7 @@ const musicVideos = [
     { id: 'rsqELc75x3o', url: 'https://www.youtube.com/watch?v=rsqELc75x3o', song: 'Loading...', artist: '' },
     { id: 'nl4wDLtyyb8', url: 'https://www.youtube.com/watch?v=nl4wDLtyyb8', song: 'Loading...', artist: '' },
     { id: '90jQUHzYB4g', url: 'https://www.youtube.com/watch?v=90jQUHzYB4g', song: 'Loading...', artist: '' },
-    { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' },
-    { id: '8jJGprMuCxM', url: 'https://www.youtube.com/watch?v=8jJGprMuCxM', song: 'Loading...', artist: '' }
+    { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' }
 ];
 
 const musicVideoIds = musicVideos.map(v => v.id);
@@ -1459,6 +1462,231 @@ if (document.readyState === 'loading') {
 } else {
     generateEventThumbnails();
     fetchEventTitles();
+}
+
+// Live Stream Video Gallery Setup
+const liveStreamTrigger = document.querySelector('.live-stream-gallery-trigger');
+const liveStreamModal = document.getElementById('liveStreamModal');
+const liveStreamThumbnails = document.getElementById('liveStreamThumbnails');
+const liveStreamThumbnailGrid = document.getElementById('liveStreamThumbnailGrid');
+const liveStreamGalleryView = document.getElementById('liveStreamGalleryView');
+const liveStreamPrev = document.getElementById('liveStreamPrev');
+const liveStreamNext = document.getElementById('liveStreamNext');
+const liveStreamCurrent = document.getElementById('liveStreamCurrent');
+const liveStreamTotal = document.getElementById('liveStreamTotal');
+const backToLiveStreamThumbnailsBtn = document.getElementById('backToLiveStreamThumbnails');
+const liveStreamVideoTitle = document.getElementById('liveStreamVideoTitle');
+const liveStreamLargeThumbnail = document.getElementById('liveStreamLargeThumbnail');
+const liveStreamPlayButtonLarge = document.getElementById('liveStreamPlayButtonLarge');
+
+let currentLiveStreamIndex = 0;
+let isLiveStreamLargeView = false;
+
+if (liveStreamTotal) {
+    liveStreamTotal.textContent = liveStreamVideos.length;
+}
+
+// Generate live stream thumbnail grid dynamically
+function generateLiveStreamThumbnails() {
+    if (liveStreamThumbnailGrid) {
+        liveStreamThumbnailGrid.innerHTML = '';
+        liveStreamVideos.forEach((video, index) => {
+            const thumbnailDiv = document.createElement('div');
+            thumbnailDiv.className = 'thumbnail-item video-thumbnail';
+            thumbnailDiv.setAttribute('data-index', index);
+            const displayTitle = video.song || 'Loading...';
+            thumbnailDiv.innerHTML = `
+                <div class="video-info-overlay">
+                    <h4 class="video-song-name">${displayTitle}</h4>
+                </div>
+                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                <div class="play-icon">▶</div>
+            `;
+            liveStreamThumbnailGrid.appendChild(thumbnailDiv);
+        });
+        
+        // Add click handlers to new thumbnails
+        const newThumbnails = liveStreamThumbnailGrid.querySelectorAll('.video-thumbnail');
+        newThumbnails.forEach((thumbnail) => {
+            thumbnail.addEventListener('click', () => {
+                const index = parseInt(thumbnail.getAttribute('data-index'));
+                showLargeLiveStreamView(index);
+            });
+        });
+    }
+}
+
+// Fetch live stream video titles from YouTube oEmbed API
+async function fetchLiveStreamTitles() {
+    const promises = liveStreamVideos.map(async (video, index) => {
+        try {
+            let oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(video.url)}&format=json`;
+            let response;
+            
+            try {
+                response = await fetch(oembedUrl);
+            } catch (e) {
+                oembedUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.youtube.com/oembed?url=${encodeURIComponent(video.url)}&format=json`)}`;
+                response = await fetch(oembedUrl);
+            }
+            
+            const data = await response.json();
+            
+            if (data && data.title) {
+                video.song = data.title;
+                updateLiveStreamTitle(index, video.song);
+            }
+        } catch (error) {
+            console.error(`Error fetching title for live stream video ${video.id}:`, error);
+            video.song = `Live Stream ${index + 1}`;
+        }
+    });
+    
+    await Promise.all(promises);
+    if (typeof generateLiveStreamThumbnails === 'function') {
+        generateLiveStreamThumbnails();
+    }
+}
+
+// Update live stream video title in the UI
+function updateLiveStreamTitle(index, title) {
+    const thumbnail = document.querySelector(`#liveStreamThumbnailGrid .video-thumbnail[data-index="${index}"]`);
+    if (thumbnail) {
+        const songNameEl = thumbnail.querySelector('.video-song-name');
+        if (songNameEl) songNameEl.textContent = title;
+    }
+}
+
+// Open modal when clicking live stream cover
+if (liveStreamTrigger && liveStreamModal) {
+    liveStreamTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        liveStreamModal.classList.add('active');
+        showLiveStreamThumbnailView();
+        document.body.style.overflow = 'hidden';
+    });
+}
+
+// Close modal
+const liveStreamModalClose = document.querySelector('.live-stream-modal-close');
+if (liveStreamModalClose) {
+    liveStreamModalClose.addEventListener('click', () => {
+        closeLiveStreamModal();
+    });
+}
+
+// Close modal when clicking outside (only in thumbnail view)
+if (liveStreamModal) {
+    liveStreamModal.addEventListener('click', (e) => {
+        if (e.target === liveStreamModal && !isLiveStreamLargeView) {
+            closeLiveStreamModal();
+        }
+    });
+}
+
+// Show thumbnail view
+function showLiveStreamThumbnailView() {
+    isLiveStreamLargeView = false;
+    if (liveStreamThumbnails) liveStreamThumbnails.style.display = 'block';
+    if (liveStreamGalleryView) liveStreamGalleryView.style.display = 'none';
+}
+
+// Show large video view
+function showLargeLiveStreamView(index) {
+    isLiveStreamLargeView = true;
+    currentLiveStreamIndex = index;
+    const video = liveStreamVideos[index];
+    
+    if (liveStreamThumbnails) liveStreamThumbnails.style.display = 'none';
+    if (liveStreamGalleryView) liveStreamGalleryView.style.display = 'block';
+    
+    // Update video info
+    if (liveStreamVideoTitle) liveStreamVideoTitle.textContent = video.song;
+    if (liveStreamLargeThumbnail) {
+        liveStreamLargeThumbnail.src = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+        liveStreamLargeThumbnail.onerror = function() {
+            this.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+        };
+    }
+    
+    // Update play button to open YouTube
+    if (liveStreamPlayButtonLarge) {
+        liveStreamPlayButtonLarge.onclick = () => {
+            window.open(video.url, '_blank');
+        };
+    }
+    
+    if (liveStreamCurrent) {
+        liveStreamCurrent.textContent = index + 1;
+    }
+}
+
+function nextLiveStream() {
+    if (!isLiveStreamLargeView) return;
+    currentLiveStreamIndex = (currentLiveStreamIndex + 1) % liveStreamVideos.length;
+    showLargeLiveStreamView(currentLiveStreamIndex);
+}
+
+function prevLiveStream() {
+    if (!isLiveStreamLargeView) return;
+    currentLiveStreamIndex = (currentLiveStreamIndex - 1 + liveStreamVideos.length) % liveStreamVideos.length;
+    showLargeLiveStreamView(currentLiveStreamIndex);
+}
+
+function closeLiveStreamModal() {
+    if (liveStreamModal) {
+        liveStreamModal.classList.remove('active');
+        showLiveStreamThumbnailView();
+        document.body.style.overflow = '';
+    }
+}
+
+// Back to thumbnails button
+if (backToLiveStreamThumbnailsBtn) {
+    backToLiveStreamThumbnailsBtn.addEventListener('click', () => {
+        showLiveStreamThumbnailView();
+    });
+}
+
+// Navigation buttons
+if (liveStreamNext) {
+    liveStreamNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nextLiveStream();
+    });
+}
+
+if (liveStreamPrev) {
+    liveStreamPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        prevLiveStream();
+    });
+}
+
+// Keyboard navigation (arrow keys) - only in large view
+document.addEventListener('keydown', (e) => {
+    if (liveStreamModal && liveStreamModal.classList.contains('active') && isLiveStreamLargeView) {
+        if (e.key === 'ArrowRight') {
+            nextLiveStream();
+        } else if (e.key === 'ArrowLeft') {
+            prevLiveStream();
+        } else if (e.key === 'Escape') {
+            showLiveStreamThumbnailView();
+        }
+    } else if (liveStreamModal && liveStreamModal.classList.contains('active') && !isLiveStreamLargeView && e.key === 'Escape') {
+        closeLiveStreamModal();
+    }
+});
+
+// Initialize live stream thumbnails and fetch titles
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        generateLiveStreamThumbnails();
+        fetchLiveStreamTitles();
+    });
+} else {
+    generateLiveStreamThumbnails();
+    fetchLiveStreamTitles();
 }
 
 // Wedding Video Gallery Setup
