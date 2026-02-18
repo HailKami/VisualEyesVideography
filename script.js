@@ -270,7 +270,7 @@ function generateVideoThumbnails() {
                     <h4 class="video-song-name">${displaySong}</h4>
                     ${displayArtist ? `<p class="video-artist-name-small">${displayArtist}</p>` : ''}
                 </div>
-                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displaySong}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displaySong}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
                 <div class="play-icon">▶</div>
             `;
             musicVideoThumbnailGrid.appendChild(thumbnailDiv);
@@ -823,7 +823,7 @@ function generateModelVideoThumbnails() {
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
                 <div class="play-icon">▶</div>
             `;
             modelVideoThumbnailGrid.appendChild(thumbnailDiv);
@@ -1051,7 +1051,7 @@ function generateShortFilmThumbnails() {
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="${thumbnailSrc}" alt="${displayTitle}" onerror="this.src='${fallbackSrc}'">
+                <img src="${thumbnailSrc}" alt="${displayTitle}" loading="lazy" onerror="this.src='${fallbackSrc}'">
                 <div class="play-icon">▶</div>
             `;
             shortFilmThumbnailGrid.appendChild(thumbnailDiv);
@@ -1279,7 +1279,7 @@ function generateEventThumbnails() {
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
                 <div class="play-icon">▶</div>
             `;
             eventThumbnailGrid.appendChild(thumbnailDiv);
@@ -1504,7 +1504,7 @@ function generateLiveStreamThumbnails() {
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
                 <div class="play-icon">▶</div>
             `;
             liveStreamThumbnailGrid.appendChild(thumbnailDiv);
@@ -1924,7 +1924,7 @@ function generateWeddingThumbnails() {
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="${thumbnailSrc}" alt="${displayTitle}" onerror="this.src='${fallbackSrc}'">
+                <img src="${thumbnailSrc}" alt="${displayTitle}" loading="lazy" onerror="this.src='${fallbackSrc}'">
                 <div class="play-icon">▶</div>
             `;
             weddingThumbnailGrid.appendChild(thumbnailDiv);
@@ -2152,7 +2152,7 @@ function generateCommercialThumbnails() {
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
                 <div class="play-icon">▶</div>
             `;
             commercialThumbnailGrid.appendChild(thumbnailDiv);
@@ -2377,7 +2377,7 @@ function generateRealEstateThumbnails() {
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
                 <div class="play-icon">▶</div>
             `;
             realEstateThumbnailGrid.appendChild(thumbnailDiv);

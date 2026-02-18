@@ -37,10 +37,15 @@
     <!-- Title with Location Keywords -->
     <title>St. Thomas Wedding Videographer & Photographer | VisualEyes Videography | Virgin Islands</title>
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css?v=2">
+    <!-- Performance Optimizations -->
+    <link rel="preload" href="styles.css?v=2" as="style">
+    <link rel="preload" href="logo.png" as="image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://img.youtube.com">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Schema.org JSON-LD (Local Business) -->
@@ -169,7 +174,7 @@
         <div class="container">
             <div class="nav-wrapper">
                 <a href="#home" class="logo">
-                    <img src="logo.png" alt="VisualEyes Videography - St. Thomas Wedding Videographer & Photographer" class="logo-img">
+                    <img src="logo.png" alt="VisualEyes Videography - St. Thomas Wedding Videographer & Photographer" class="logo-img" fetchpriority="high">
                     <span class="logo-text">VisualEyes Videography</span>
                 </a>
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
@@ -193,7 +198,7 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <video class="hero-video" autoplay muted loop playsinline>
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata">
             <source src="background/Magens.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -246,22 +251,22 @@
                 <div class="about-gallery">
                     <div class="gallery-grid">
                         <div class="gallery-item">
-                            <img src="Jordan photos/IMG_2131.jpg" alt="Jordan Petty - Professional videographer working in St. Thomas, Virgin Islands">
+                            <img src="Jordan photos/IMG_2131.jpg" alt="Jordan Petty - Professional videographer working in St. Thomas, Virgin Islands" loading="lazy">
                         </div>
                         <div class="gallery-item">
-                            <img src="Jordan photos/fgg.jpg" alt="VisualEyes Videography - St. Thomas wedding videography services">
+                            <img src="Jordan photos/fgg.jpg" alt="VisualEyes Videography - St. Thomas wedding videography services" loading="lazy">
                         </div>
                         <div class="gallery-item">
-                            <img src="Jordan photos/IMG_0150.JPG" alt="Professional videography services in St. Thomas, USVI">
+                            <img src="Jordan photos/IMG_0150.JPG" alt="Professional videography services in St. Thomas, USVI" loading="lazy">
                         </div>
                         <div class="gallery-item">
-                            <img src="Jordan photos/4dd068cb-4ad6-4191-bb07-2645b1b019d0.JPG" alt="Jordan Petty - Experienced videographer in Virgin Islands">
+                            <img src="Jordan photos/4dd068cb-4ad6-4191-bb07-2645b1b019d0.JPG" alt="Jordan Petty - Experienced videographer in Virgin Islands" loading="lazy">
                         </div>
                         <div class="gallery-item">
-                            <img src="Jordan photos/484342079_1084558783711258_728132321829372218_n.jpg" alt="VisualEyes Videography - Event photography and videography St. Thomas">
+                            <img src="Jordan photos/484342079_1084558783711258_728132321829372218_n.jpg" alt="VisualEyes Videography - Event photography and videography St. Thomas" loading="lazy">
                         </div>
                         <div class="gallery-item">
-                            <img src="Jordan photos/IMG_9882.jpg" alt="Professional wedding videography services in Virgin Islands">
+                            <img src="Jordan photos/IMG_9882.jpg" alt="Professional wedding videography services in Virgin Islands" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -365,7 +370,7 @@
                         <h3>Music Video Gallery</h3>
                         <p>Click to view all videos</p>
                     </div>
-                    <img src="https://img.youtube.com/vi/qQM0r7xCBzI/maxresdefault.jpg" alt="Music Video Gallery" onerror="this.src='https://img.youtube.com/vi/qQM0r7xCBzI/hqdefault.jpg'">
+                    <img src="https://img.youtube.com/vi/qQM0r7xCBzI/maxresdefault.jpg" alt="Music Video Gallery" loading="lazy" onerror="this.src='https://img.youtube.com/vi/qQM0r7xCBzI/hqdefault.jpg'">
                 </div>
                 <!-- Event Videos - Cover Image -->
                 <div class="portfolio-item event-gallery-trigger" data-category="events">
@@ -373,7 +378,7 @@
                         <h3>Events Gallery</h3>
                         <p>Click to view all events</p>
                     </div>
-                    <img src="https://img.youtube.com/vi/CwYaGIrvJSA/maxresdefault.jpg" alt="Events Gallery" onerror="this.src='https://img.youtube.com/vi/CwYaGIrvJSA/hqdefault.jpg'">
+                    <img src="https://img.youtube.com/vi/CwYaGIrvJSA/maxresdefault.jpg" alt="Events Gallery" loading="lazy" onerror="this.src='https://img.youtube.com/vi/CwYaGIrvJSA/hqdefault.jpg'">
                 </div>
                 <!-- Wedding Videos - Cover Image -->
                 <div class="portfolio-item wedding-gallery-trigger" data-category="weddings">
@@ -381,7 +386,7 @@
                         <h3>Wedding Gallery</h3>
                         <p>Click to view all weddings</p>
                     </div>
-                    <img src="weddings/wedding-thumbnail.jpg" alt="Wedding Gallery" onerror="this.src='https://img.youtube.com/vi/Sv2L7p9YbDE/maxresdefault.jpg'">
+                    <img src="weddings/wedding-thumbnail.jpg" alt="Wedding Gallery" loading="lazy" onerror="this.src='https://img.youtube.com/vi/Sv2L7p9YbDE/maxresdefault.jpg'">
                 </div>
                 <!-- Short Film Videos - Cover Image -->
                 <div class="portfolio-item short-film-gallery-trigger" data-category="short-films">
@@ -389,7 +394,7 @@
                         <h3>Short Film Gallery</h3>
                         <p>Click to view all films</p>
                     </div>
-                    <img src="short-films/kante-thumbnail.jpg" alt="Short Film Gallery" onerror="this.src='https://img.youtube.com/vi/WOi4zrJ0bCw/maxresdefault.jpg'">
+                    <img src="short-films/kante-thumbnail.jpg" alt="Short Film Gallery" loading="lazy" onerror="this.src='https://img.youtube.com/vi/WOi4zrJ0bCw/maxresdefault.jpg'">
                 </div>
                 <!-- Model Shoot Videos - Cover Image -->
                 <div class="portfolio-item model-video-gallery-trigger" data-category="models">
@@ -397,7 +402,7 @@
                         <h3>Model Shoot Gallery</h3>
                         <p>Click to view all videos</p>
                     </div>
-                    <img src="https://img.youtube.com/vi/KeIVuWH641g/maxresdefault.jpg" alt="Model Shoot Gallery" onerror="this.src='https://img.youtube.com/vi/KeIVuWH641g/hqdefault.jpg'">
+                    <img src="https://img.youtube.com/vi/KeIVuWH641g/maxresdefault.jpg" alt="Model Shoot Gallery" loading="lazy" onerror="this.src='https://img.youtube.com/vi/KeIVuWH641g/hqdefault.jpg'">
                 </div>
                 <!-- Commercial Videos - Cover Image -->
                 <div class="portfolio-item commercial-gallery-trigger" data-category="commercials">
@@ -405,7 +410,7 @@
                         <h3>Commercials Gallery</h3>
                         <p>Click to view all commercials</p>
                     </div>
-                    <img src="https://img.youtube.com/vi/s0WSaK1rcbU/maxresdefault.jpg" alt="Commercials Gallery" onerror="this.src='https://img.youtube.com/vi/s0WSaK1rcbU/hqdefault.jpg'">
+                    <img src="https://img.youtube.com/vi/s0WSaK1rcbU/maxresdefault.jpg" alt="Commercials Gallery" loading="lazy" onerror="this.src='https://img.youtube.com/vi/s0WSaK1rcbU/hqdefault.jpg'">
                 </div>
                 <!-- Real Estate Videos - Cover Image -->
                 <div class="portfolio-item real-estate-gallery-trigger" data-category="real-estate">
@@ -413,7 +418,7 @@
                         <h3>Real Estate Gallery</h3>
                         <p>Click to view all properties</p>
                     </div>
-                    <img src="https://img.youtube.com/vi/rZH056NwlH4/maxresdefault.jpg" alt="Real Estate Gallery" onerror="this.src='https://img.youtube.com/vi/rZH056NwlH4/hqdefault.jpg'">
+                    <img src="https://img.youtube.com/vi/rZH056NwlH4/maxresdefault.jpg" alt="Real Estate Gallery" loading="lazy" onerror="this.src='https://img.youtube.com/vi/rZH056NwlH4/hqdefault.jpg'">
                 </div>
                 <!-- Documentary Videos - Cover Image -->
                 <div class="portfolio-item documentary-gallery-trigger" data-category="documentaries">
@@ -421,7 +426,7 @@
                         <h3>Documentaries Gallery</h3>
                         <p>Click to view all documentaries</p>
                     </div>
-                    <img src="doc/documentary-thumbnail.png" alt="Documentaries Gallery">
+                    <img src="doc/documentary-thumbnail.png" alt="Documentaries Gallery" loading="lazy">
                 </div>
                 <!-- Live Stream Videos - Cover Image -->
                 <div class="portfolio-item live-stream-gallery-trigger" data-category="live-streams">
@@ -429,14 +434,14 @@
                         <h3>Live Streams Gallery</h3>
                         <p>Click to view all live streams</p>
                     </div>
-                    <img src="https://img.youtube.com/vi/TzTGYkGFvOg/maxresdefault.jpg" alt="Live Streams Gallery" onerror="this.src='https://img.youtube.com/vi/TzTGYkGFvOg/hqdefault.jpg'">
+                    <img src="https://img.youtube.com/vi/TzTGYkGFvOg/maxresdefault.jpg" alt="Live Streams Gallery" loading="lazy" onerror="this.src='https://img.youtube.com/vi/TzTGYkGFvOg/hqdefault.jpg'">
                 </div>
                 <div class="portfolio-item photoshoot-gallery-trigger" data-category="photoshoots">
                     <div class="portfolio-overlay">
                         <h3>Photoshoot Gallery</h3>
                         <p>Click to view all photos</p>
                     </div>
-                    <img src="photoshoots/P1122210.jpg" alt="Photoshoot Gallery">
+                    <img src="photoshoots/P1122210.jpg" alt="Photoshoot Gallery" loading="lazy">
                 </div>
             </div>
         </div>
@@ -444,7 +449,7 @@
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
-        <video class="contact-video" autoplay muted loop playsinline>
+        <video class="contact-video" autoplay muted loop playsinline preload="metadata">
             <source src="touch/magens test.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -530,7 +535,7 @@
             <div class="staff-grid">
                 <div class="staff-card">
                     <div class="staff-image">
-                        <img src="staff/Jordan Petty CEO.png" alt="Jordan Petty - CEO">
+                        <img src="staff/Jordan Petty CEO.png" alt="Jordan Petty - CEO" loading="lazy">
                     </div>
                     <div class="staff-info">
                         <h3>Jordan Petty</h3>
@@ -540,7 +545,7 @@
                 </div>
                 <div class="staff-card">
                     <div class="staff-image">
-                        <img src="staff/Mwamini Frett_Public Relations.png" alt="Mwamini Frett - Public Relations">
+                        <img src="staff/Mwamini Frett_Public Relations.png" alt="Mwamini Frett - Public Relations" loading="lazy">
                     </div>
                     <div class="staff-info">
                         <h3>Mwamini Frett</h3>
@@ -550,7 +555,7 @@
                 </div>
                 <div class="staff-card">
                     <div class="staff-image">
-                        <img src="staff/mali.png" alt="Malique Daniel - Camera Operator and Editor">
+                        <img src="staff/mali.png" alt="Malique Daniel - Camera Operator and Editor" loading="lazy">
                     </div>
                     <div class="staff-info">
                         <h3>Malique Daniel</h3>
@@ -560,7 +565,7 @@
                 </div>
                 <div class="staff-card">
                     <div class="staff-image">
-                        <img src="staff/shyra.png" alt="Shyra Farrell - Executive Director/Consultant">
+                        <img src="staff/shyra.png" alt="Shyra Farrell - Executive Director/Consultant" loading="lazy">
                     </div>
                     <div class="staff-info">
                         <h3>Shyra Farrell Ph.D CLMT</h3>
