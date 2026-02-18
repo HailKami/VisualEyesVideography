@@ -151,6 +151,11 @@ const liveStreamVideos = [
     { id: 'TzTGYkGFvOg', url: 'https://youtu.be/TzTGYkGFvOg?si=XbYrLG4RIbsYAHVZ', song: 'Loading...', artist: '' }
 ];
 
+// Documentary Videos - Video data (Facebook videos)
+const documentaryVideos = [
+    { url: 'https://www.facebook.com/share/v/1GUYqWjwZG/', title: 'Documentary', type: 'facebook' }
+];
+
 // Music Video Gallery - Video data (titles will be fetched from YouTube)
 const musicVideos = [
     { id: 'qQM0r7xCBzI', url: 'https://www.youtube.com/watch?v=qQM0r7xCBzI', song: 'Loading...', artist: '' },
@@ -1687,6 +1692,189 @@ if (document.readyState === 'loading') {
 } else {
     generateLiveStreamThumbnails();
     fetchLiveStreamTitles();
+}
+
+// Documentary Video Gallery Setup
+const documentaryTrigger = document.querySelector('.documentary-gallery-trigger');
+const documentaryModal = document.getElementById('documentaryModal');
+const documentaryThumbnails = document.getElementById('documentaryThumbnails');
+const documentaryThumbnailGrid = document.getElementById('documentaryThumbnailGrid');
+const documentaryGalleryView = document.getElementById('documentaryGalleryView');
+const documentaryPrev = document.getElementById('documentaryPrev');
+const documentaryNext = document.getElementById('documentaryNext');
+const documentaryCurrent = document.getElementById('documentaryCurrent');
+const documentaryTotal = document.getElementById('documentaryTotal');
+const backToDocumentaryThumbnailsBtn = document.getElementById('backToDocumentaryThumbnails');
+const documentaryVideoTitle = document.getElementById('documentaryVideoTitle');
+const documentaryVideoEmbed = document.getElementById('documentaryVideoEmbed');
+
+let currentDocumentaryIndex = 0;
+let isDocumentaryLargeView = false;
+
+if (documentaryTotal) {
+    documentaryTotal.textContent = documentaryVideos.length;
+}
+
+// Generate documentary thumbnail grid dynamically
+function generateDocumentaryThumbnails() {
+    if (documentaryThumbnailGrid) {
+        documentaryThumbnailGrid.innerHTML = '';
+        documentaryVideos.forEach((video, index) => {
+            const thumbnailDiv = document.createElement('div');
+            thumbnailDiv.className = 'thumbnail-item video-thumbnail';
+            thumbnailDiv.setAttribute('data-index', index);
+            const displayTitle = video.title || 'Documentary';
+            thumbnailDiv.innerHTML = `
+                <div class="video-info-overlay">
+                    <h4 class="video-song-name">${displayTitle}</h4>
+                </div>
+                <img src="https://via.placeholder.com/400x225/1a1a1a/d4af37?text=Documentary" alt="${displayTitle}">
+                <div class="play-icon">▶</div>
+            `;
+            documentaryThumbnailGrid.appendChild(thumbnailDiv);
+        });
+        
+        // Add click handlers to new thumbnails
+        const newThumbnails = documentaryThumbnailGrid.querySelectorAll('.video-thumbnail');
+        newThumbnails.forEach((thumbnail) => {
+            thumbnail.addEventListener('click', () => {
+                const index = parseInt(thumbnail.getAttribute('data-index'));
+                showLargeDocumentaryView(index);
+            });
+        });
+    }
+}
+
+// Show large documentary view
+function showLargeDocumentaryView(index) {
+    isDocumentaryLargeView = true;
+    currentDocumentaryIndex = index;
+    const video = documentaryVideos[index];
+    
+    if (documentaryThumbnails) documentaryThumbnails.style.display = 'none';
+    if (documentaryGalleryView) documentaryGalleryView.style.display = 'block';
+    if (documentaryVideoTitle) documentaryVideoTitle.textContent = video.title || 'Documentary';
+    
+    // Handle Facebook video embed
+    if (documentaryVideoEmbed && video.type === 'facebook') {
+        // Extract video ID from Facebook URL if possible, or use direct link
+        const facebookUrl = video.url;
+        // Create a link button to open Facebook video
+        documentaryVideoEmbed.innerHTML = `
+            <div style="text-align: center; padding: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">${video.title || 'Documentary'}</h3>
+                <p style="margin-bottom: 2rem; color: var(--text-light);">Watch this documentary on Facebook</p>
+                <a href="${facebookUrl}" target="_blank" rel="noopener noreferrer" 
+                   style="display: inline-block; padding: 1rem 2rem; background: var(--secondary-color); 
+                          color: var(--bg-dark); text-decoration: none; border-radius: 50px; 
+                          font-weight: 600; transition: var(--transition);">
+                    Watch on Facebook
+                </a>
+            </div>
+        `;
+    }
+    
+    if (documentaryCurrent) {
+        documentaryCurrent.textContent = index + 1;
+    }
+}
+
+// Open modal when clicking documentary cover
+if (documentaryTrigger && documentaryModal) {
+    documentaryTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        documentaryModal.classList.add('active');
+        showDocumentaryThumbnailView();
+        document.body.style.overflow = 'hidden';
+    });
+}
+
+const documentaryModalClose = document.querySelector('.documentary-modal-close');
+if (documentaryModalClose) {
+    documentaryModalClose.addEventListener('click', () => {
+        closeDocumentaryModal();
+    });
+}
+
+if (documentaryModal) {
+    documentaryModal.addEventListener('click', (e) => {
+        if (e.target === documentaryModal && !isDocumentaryLargeView) {
+            closeDocumentaryModal();
+        }
+    });
+}
+
+// Show thumbnail view
+function showDocumentaryThumbnailView() {
+    isDocumentaryLargeView = false;
+    if (documentaryThumbnails) documentaryThumbnails.style.display = 'block';
+    if (documentaryGalleryView) documentaryGalleryView.style.display = 'none';
+}
+
+function nextDocumentary() {
+    if (!isDocumentaryLargeView) return;
+    currentDocumentaryIndex = (currentDocumentaryIndex + 1) % documentaryVideos.length;
+    showLargeDocumentaryView(currentDocumentaryIndex);
+}
+
+function prevDocumentary() {
+    if (!isDocumentaryLargeView) return;
+    currentDocumentaryIndex = (currentDocumentaryIndex - 1 + documentaryVideos.length) % documentaryVideos.length;
+    showLargeDocumentaryView(currentDocumentaryIndex);
+}
+
+function closeDocumentaryModal() {
+    if (documentaryModal) {
+        documentaryModal.classList.remove('active');
+        showDocumentaryThumbnailView();
+        document.body.style.overflow = '';
+    }
+}
+
+// Back to thumbnails button
+if (backToDocumentaryThumbnailsBtn) {
+    backToDocumentaryThumbnailsBtn.addEventListener('click', () => {
+        showDocumentaryThumbnailView();
+    });
+}
+
+// Navigation buttons
+if (documentaryNext) {
+    documentaryNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nextDocumentary();
+    });
+}
+
+if (documentaryPrev) {
+    documentaryPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        prevDocumentary();
+    });
+}
+
+// Keyboard navigation (arrow keys) - only in large view
+document.addEventListener('keydown', (e) => {
+    if (documentaryModal && documentaryModal.classList.contains('active') && isDocumentaryLargeView) {
+        if (e.key === 'ArrowRight') {
+            nextDocumentary();
+        } else if (e.key === 'ArrowLeft') {
+            prevDocumentary();
+        } else if (e.key === 'Escape') {
+            showDocumentaryThumbnailView();
+        }
+    } else if (documentaryModal && documentaryModal.classList.contains('active') && !isDocumentaryLargeView && e.key === 'Escape') {
+        closeDocumentaryModal();
+    }
+});
+
+// Initialize documentary thumbnails
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        generateDocumentaryThumbnails();
+    });
+} else {
+    generateDocumentaryThumbnails();
 }
 
 // Wedding Video Gallery Setup
