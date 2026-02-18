@@ -1728,7 +1728,7 @@ function generateDocumentaryThumbnails() {
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="https://via.placeholder.com/400x225/1a1a1a/d4af37?text=Documentary" alt="${displayTitle}">
+                <img src="doc/documentary-thumbnail.png" alt="${displayTitle}">
                 <div class="play-icon">▶</div>
             `;
             documentaryThumbnailGrid.appendChild(thumbnailDiv);
@@ -1759,17 +1759,26 @@ function showLargeDocumentaryView(index) {
     if (documentaryVideoEmbed && video.type === 'facebook') {
         // Extract video ID from Facebook URL if possible, or use direct link
         const facebookUrl = video.url;
-        // Create a link button to open Facebook video
+        // Create thumbnail with play button overlay and link to Facebook video
         documentaryVideoEmbed.innerHTML = `
-            <div style="text-align: center; padding: 2rem;">
-                <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">${video.title || 'Documentary'}</h3>
-                <p style="margin-bottom: 2rem; color: var(--text-light);">Watch this documentary on Facebook</p>
+            <div style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
+                <img src="doc/documentary-thumbnail.png" alt="${video.title || 'Documentary'}" 
+                     style="width: 100%; height: auto; border-radius: 10px; display: block;">
                 <a href="${facebookUrl}" target="_blank" rel="noopener noreferrer" 
-                   style="display: inline-block; padding: 1rem 2rem; background: var(--secondary-color); 
-                          color: var(--bg-dark); text-decoration: none; border-radius: 50px; 
-                          font-weight: 600; transition: var(--transition);">
-                    Watch on Facebook
+                   style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                          display: flex; align-items: center; justify-content: center;
+                          width: 80px; height: 80px; background: rgba(212, 175, 55, 0.9);
+                          border-radius: 50%; color: var(--bg-dark); text-decoration: none;
+                          font-size: 2rem; transition: var(--transition); cursor: pointer;
+                          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);"
+                   onmouseover="this.style.background='rgba(212, 175, 55, 1)'; this.style.transform='translate(-50%, -50%) scale(1.1)'"
+                   onmouseout="this.style.background='rgba(212, 175, 55, 0.9)'; this.style.transform='translate(-50%, -50%) scale(1)'">
+                    ▶
                 </a>
+                <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+                            background: rgba(0, 0, 0, 0.7); padding: 0.5rem 1.5rem; border-radius: 25px;">
+                    <p style="margin: 0; color: white; font-weight: 600;">Watch on Facebook</p>
+                </div>
             </div>
         `;
     }
