@@ -160,7 +160,7 @@ const documentaryVideos = [
 // Music Video Gallery - Video data (titles will be fetched from YouTube)
 const musicVideos = [
     { id: 'eXuQdNSxOTA', url: 'https://youtu.be/eXuQdNSxOTA', song: 'Loading...', artist: '' },
-    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook' },
+    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook', customThumbnail: 'stress.png' },
     { id: 'qQM0r7xCBzI', url: 'https://www.youtube.com/watch?v=qQM0r7xCBzI', song: 'Loading...', artist: '' },
     { id: 'XbxJbqS_0f0', url: 'https://www.youtube.com/watch?v=XbxJbqS_0f0', song: 'Loading...', artist: '' },
     { id: 'wUW9kOgh-i4', url: 'https://www.youtube.com/watch?v=wUW9kOgh-i4', song: 'Loading...', artist: '' },
@@ -286,9 +286,12 @@ function generateVideoThumbnails() {
             const displaySong = video.song || 'Loading...';
             const displayArtist = video.artist || '';
             
-            // Handle Facebook videos differently
+            // Handle custom thumbnails, Facebook videos, and YouTube videos
             let thumbnailImg = '';
-            if (video.type === 'facebook') {
+            if (video.customThumbnail) {
+                // Use custom thumbnail if provided
+                thumbnailImg = `<img src="${video.customThumbnail}" alt="${displaySong}" loading="lazy">`;
+            } else if (video.type === 'facebook') {
                 // Use a placeholder or generic music video thumbnail for Facebook videos
                 thumbnailImg = `<img src="https://img.youtube.com/vi/qQM0r7xCBzI/maxresdefault.jpg" alt="${displaySong}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/qQM0r7xCBzI/hqdefault.jpg'" style="opacity: 0.7;">`;
             } else {
@@ -378,9 +381,12 @@ function showLargeVideoView(index) {
     if (videoSongTitle) videoSongTitle.textContent = video.song;
     if (videoArtistName) videoArtistName.textContent = video.artist;
     
-    // Handle Facebook videos differently
+    // Handle custom thumbnails, Facebook videos, and YouTube videos
     if (largeVideoThumbnail) {
-        if (video.type === 'facebook') {
+        if (video.customThumbnail) {
+            // Use custom thumbnail if provided
+            largeVideoThumbnail.src = video.customThumbnail;
+        } else if (video.type === 'facebook') {
             // Use a placeholder thumbnail for Facebook videos
             largeVideoThumbnail.src = `https://img.youtube.com/vi/qQM0r7xCBzI/maxresdefault.jpg`;
             largeVideoThumbnail.onerror = function() {
