@@ -289,8 +289,8 @@ function generateVideoThumbnails() {
             // Handle custom thumbnails, Facebook videos, and YouTube videos
             let thumbnailImg = '';
             if (video.customThumbnail) {
-                // Use custom thumbnail if provided
-                thumbnailImg = `<img src="${video.customThumbnail}" alt="${displaySong}" loading="lazy">`;
+                // Use custom thumbnail if provided (with Safari-compatible error handling)
+                thumbnailImg = `<img src="${video.customThumbnail}" alt="${displaySong}" loading="lazy" onerror="this.onerror=null; this.src='https://img.youtube.com/vi/qQM0r7xCBzI/hqdefault.jpg';">`;
             } else if (video.type === 'facebook') {
                 // Use a placeholder or generic music video thumbnail for Facebook videos
                 thumbnailImg = `<img src="https://img.youtube.com/vi/qQM0r7xCBzI/maxresdefault.jpg" alt="${displaySong}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/qQM0r7xCBzI/hqdefault.jpg'" style="opacity: 0.7;">`;
@@ -384,8 +384,13 @@ function showLargeVideoView(index) {
     // Handle custom thumbnails, Facebook videos, and YouTube videos
     if (largeVideoThumbnail) {
         if (video.customThumbnail) {
-            // Use custom thumbnail if provided
+            // Use custom thumbnail if provided (with Safari-compatible error handling)
             largeVideoThumbnail.src = video.customThumbnail;
+            largeVideoThumbnail.onerror = function() {
+                // Fallback if custom thumbnail fails to load (Safari compatibility)
+                this.onerror = null;
+                this.src = 'https://img.youtube.com/vi/qQM0r7xCBzI/hqdefault.jpg';
+            };
         } else if (video.type === 'facebook') {
             // Use a placeholder thumbnail for Facebook videos
             largeVideoThumbnail.src = `https://img.youtube.com/vi/qQM0r7xCBzI/maxresdefault.jpg`;
