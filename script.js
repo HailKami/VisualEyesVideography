@@ -160,7 +160,7 @@ const documentaryVideos = [
 // Music Video Gallery - Video data (titles will be fetched from YouTube)
 const musicVideos = [
     { id: 'eXuQdNSxOTA', url: 'https://youtu.be/eXuQdNSxOTA', song: 'Loading...', artist: '' },
-    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook', customThumbnail: 'stress.png' },
+    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook', customThumbnail: 'stress.png?v=1' },
     { id: 'qQM0r7xCBzI', url: 'https://www.youtube.com/watch?v=qQM0r7xCBzI', song: 'Loading...', artist: '' },
     { id: 'XbxJbqS_0f0', url: 'https://www.youtube.com/watch?v=XbxJbqS_0f0', song: 'Loading...', artist: '' },
     { id: 'wUW9kOgh-i4', url: 'https://www.youtube.com/watch?v=wUW9kOgh-i4', song: 'Loading...', artist: '' },
