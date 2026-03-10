@@ -159,6 +159,8 @@ const documentaryVideos = [
 
 // Music Video Gallery - Video data (titles will be fetched from YouTube)
 const musicVideos = [
+    { id: 'eXuQdNSxOTA', url: 'https://youtu.be/eXuQdNSxOTA', song: 'Loading...', artist: '' },
+    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook' },
     { id: 'qQM0r7xCBzI', url: 'https://www.youtube.com/watch?v=qQM0r7xCBzI', song: 'Loading...', artist: '' },
     { id: 'XbxJbqS_0f0', url: 'https://www.youtube.com/watch?v=XbxJbqS_0f0', song: 'Loading...', artist: '' },
     { id: 'wUW9kOgh-i4', url: 'https://www.youtube.com/watch?v=wUW9kOgh-i4', song: 'Loading...', artist: '' },
@@ -171,9 +173,7 @@ const musicVideos = [
     { id: 'rsqELc75x3o', url: 'https://www.youtube.com/watch?v=rsqELc75x3o', song: 'Loading...', artist: '' },
     { id: 'nl4wDLtyyb8', url: 'https://www.youtube.com/watch?v=nl4wDLtyyb8', song: 'Loading...', artist: '' },
     { id: '90jQUHzYB4g', url: 'https://www.youtube.com/watch?v=90jQUHzYB4g', song: 'Loading...', artist: '' },
-    { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' },
-    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook' },
-    { id: 'eXuQdNSxOTA', url: 'https://youtu.be/eXuQdNSxOTA', song: 'Loading...', artist: '' }
+    { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' }
 ];
 
 const musicVideoIds = musicVideos.map(v => v.id);
@@ -181,17 +181,30 @@ const musicVideoIds = musicVideos.map(v => v.id);
 // Fetch video titles from YouTube oEmbed API
 async function fetchVideoTitles() {
     const promises = musicVideos.map(async (video, index) => {
+        // Skip Facebook videos - they already have titles set
+        if (video.type === 'facebook') {
+            updateVideoTitle(index, video.song, video.artist);
+            return;
+        }
+        
         try {
             // Use YouTube oEmbed API to get video title
+            // Convert youtu.be URLs to youtube.com/watch format for better compatibility
+            let videoUrl = video.url;
+            if (videoUrl.includes('youtu.be/')) {
+                const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+            }
+            
             // Try direct fetch first
-            let oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(video.url)}&format=json`;
+            let oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(videoUrl)}&format=json`;
             let response;
             
             try {
                 response = await fetch(oembedUrl);
             } catch (e) {
                 // If CORS blocks, try with a proxy
-                oembedUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.youtube.com/oembed?url=${encodeURIComponent(video.url)}&format=json`)}`;
+                oembedUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.youtube.com/oembed?url=${encodeURIComponent(videoUrl)}&format=json`)}`;
                 response = await fetch(oembedUrl);
             }
             
@@ -218,7 +231,11 @@ async function fetchVideoTitles() {
             }
         } catch (error) {
             console.error(`Error fetching title for video ${video.id}:`, error);
-            video.song = `Video ${index + 1}`;
+            // Don't set generic "Video X" title - keep "Loading..." or use a better fallback
+            if (video.song === 'Loading...') {
+                video.song = 'Music Video';
+            }
+            updateVideoTitle(index, video.song, video.artist);
         }
     });
     
