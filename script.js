@@ -172,7 +172,8 @@ const musicVideos = [
     { id: 'nl4wDLtyyb8', url: 'https://www.youtube.com/watch?v=nl4wDLtyyb8', song: 'Loading...', artist: '' },
     { id: '90jQUHzYB4g', url: 'https://www.youtube.com/watch?v=90jQUHzYB4g', song: 'Loading...', artist: '' },
     { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' },
-    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook' }
+    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook' },
+    { id: 'eXuQdNSxOTA', url: 'https://youtu.be/eXuQdNSxOTA', song: 'Loading...', artist: '' }
 ];
 
 const musicVideoIds = musicVideos.map(v => v.id);
