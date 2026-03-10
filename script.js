@@ -171,7 +171,8 @@ const musicVideos = [
     { id: 'rsqELc75x3o', url: 'https://www.youtube.com/watch?v=rsqELc75x3o', song: 'Loading...', artist: '' },
     { id: 'nl4wDLtyyb8', url: 'https://www.youtube.com/watch?v=nl4wDLtyyb8', song: 'Loading...', artist: '' },
     { id: '90jQUHzYB4g', url: 'https://www.youtube.com/watch?v=90jQUHzYB4g', song: 'Loading...', artist: '' },
-    { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' }
+    { id: 'Bw0Urs75YjY', url: 'https://www.youtube.com/watch?v=Bw0Urs75YjY', song: 'Loading...', artist: '' },
+    { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook' }
 ];
 
 const musicVideoIds = musicVideos.map(v => v.id);
@@ -266,12 +267,22 @@ function generateVideoThumbnails() {
             thumbnailDiv.setAttribute('data-index', index);
             const displaySong = video.song || 'Loading...';
             const displayArtist = video.artist || '';
+            
+            // Handle Facebook videos differently
+            let thumbnailImg = '';
+            if (video.type === 'facebook') {
+                // Use a placeholder or generic music video thumbnail for Facebook videos
+                thumbnailImg = `<img src="https://img.youtube.com/vi/qQM0r7xCBzI/maxresdefault.jpg" alt="${displaySong}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/qQM0r7xCBzI/hqdefault.jpg'" style="opacity: 0.7;">`;
+            } else {
+                thumbnailImg = `<img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displaySong}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">`;
+            }
+            
             thumbnailDiv.innerHTML = `
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displaySong}</h4>
                     ${displayArtist ? `<p class="video-artist-name-small">${displayArtist}</p>` : ''}
                 </div>
-                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displaySong}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                ${thumbnailImg}
                 <div class="play-icon">▶</div>
             `;
             musicVideoThumbnailGrid.appendChild(thumbnailDiv);
@@ -348,15 +359,29 @@ function showLargeVideoView(index) {
     // Update video info
     if (videoSongTitle) videoSongTitle.textContent = video.song;
     if (videoArtistName) videoArtistName.textContent = video.artist;
+    
+    // Handle Facebook videos differently
     if (largeVideoThumbnail) {
-        largeVideoThumbnail.src = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
-        largeVideoThumbnail.onerror = function() {
-            this.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
-        };
+        if (video.type === 'facebook') {
+            // Use a placeholder thumbnail for Facebook videos
+            largeVideoThumbnail.src = `https://img.youtube.com/vi/qQM0r7xCBzI/maxresdefault.jpg`;
+            largeVideoThumbnail.onerror = function() {
+                this.src = `https://img.youtube.com/vi/qQM0r7xCBzI/hqdefault.jpg`;
+            };
+        } else {
+            largeVideoThumbnail.src = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+            largeVideoThumbnail.onerror = function() {
+                this.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+            };
+        }
     }
     
-    // Update play button to open YouTube
+    // Update play button text and action based on video type
     if (playButtonLarge) {
+        const playText = playButtonLarge.querySelector('.play-text');
+        if (playText) {
+            playText.textContent = video.type === 'facebook' ? 'Watch on Facebook' : 'Watch on YouTube';
+        }
         playButtonLarge.onclick = () => {
             window.open(video.url, '_blank');
         };
