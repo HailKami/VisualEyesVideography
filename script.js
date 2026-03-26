@@ -130,9 +130,7 @@ const eventVideos = [
 
 // Wedding Videos - Video data (titles will be fetched from YouTube)
 const weddingVideos = [
-    { id: 'Sv2L7p9YbDE', url: 'https://www.youtube.com/watch?v=Sv2L7p9YbDE&t=32s', song: 'Loading...', artist: '', customThumbnail: 'weddings/wedding-thumbnail.jpg' },
-    { id: 'Cb4cLWBf52Y', url: 'https://www.youtube.com/watch?v=Cb4cLWBf52Y&t=448s', song: 'Loading...', artist: '' },
-    { id: 'A8JluXhTMQ0', url: 'https://youtu.be/A8JluXhTMQ0', song: 'Loading...', artist: '' }
+    { id: 'aRcml_u2Gu0', url: 'https://youtu.be/aRcml_u2Gu0', song: 'Loading...', artist: '', customThumbnail: 'halle.png' }
 ];
 
 // Commercial Videos - Video data (titles will be fetched from YouTube)
