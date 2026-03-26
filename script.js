@@ -176,6 +176,34 @@ const musicVideos = [
 
 const musicVideoIds = musicVideos.map(v => v.id);
 
+function isYouTubeUrl(url) {
+    return typeof url === 'string' && (url.includes('youtube.com') || url.includes('youtu.be'));
+}
+
+function pauseBackgroundMusic() {
+    const bgMusic = document.getElementById('backgroundMusic');
+    if (bgMusic && !bgMusic.paused) {
+        bgMusic.pause();
+    }
+}
+
+function openVideoLink(url) {
+    if (isYouTubeUrl(url)) {
+        pauseBackgroundMusic();
+    }
+    window.open(url, '_blank');
+}
+
+document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[href]');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (isYouTubeUrl(href)) {
+        pauseBackgroundMusic();
+    }
+});
+
 // Fetch video titles from YouTube oEmbed API
 async function fetchVideoTitles() {
     const promises = musicVideos.map(async (video, index) => {
@@ -410,7 +438,7 @@ function showLargeVideoView(index) {
             playText.textContent = video.type === 'facebook' ? 'Watch on Facebook' : 'Watch on YouTube';
         }
         playButtonLarge.onclick = () => {
-            window.open(video.url, '_blank');
+            openVideoLink(video.url);
         };
     }
     
@@ -779,7 +807,7 @@ function addVideoToPortfolio(category, videoUrl, thumbnailUrl) {
         
         item.addEventListener('click', () => {
             // Open video in modal or new tab
-            window.open(videoUrl, '_blank');
+            openVideoLink(videoUrl);
         });
     });
 }
@@ -989,7 +1017,7 @@ function showLargeModelVideoView(index) {
     // Update play button to open YouTube
     if (modelPlayButtonLarge) {
         modelPlayButtonLarge.onclick = () => {
-            window.open(video.url, '_blank');
+            openVideoLink(video.url);
         };
     }
     
@@ -1220,7 +1248,7 @@ function showLargeShortFilmView(index) {
     // Update play button to open YouTube
     if (shortFilmPlayButtonLarge) {
         shortFilmPlayButtonLarge.onclick = () => {
-            window.open(video.url, '_blank');
+            openVideoLink(video.url);
         };
     }
     
@@ -1445,7 +1473,7 @@ function showLargeEventView(index) {
     // Update play button to open YouTube
     if (eventPlayButtonLarge) {
         eventPlayButtonLarge.onclick = () => {
-            window.open(video.url, '_blank');
+            openVideoLink(video.url);
         };
     }
     
@@ -1670,7 +1698,7 @@ function showLargeLiveStreamView(index) {
     // Update play button to open YouTube
     if (liveStreamPlayButtonLarge) {
         liveStreamPlayButtonLarge.onclick = () => {
-            window.open(video.url, '_blank');
+            openVideoLink(video.url);
         };
     }
     
@@ -2093,7 +2121,7 @@ function showLargeWeddingView(index) {
     // Update play button to open YouTube
     if (weddingPlayButtonLarge) {
         weddingPlayButtonLarge.onclick = () => {
-            window.open(video.url, '_blank');
+            openVideoLink(video.url);
         };
     }
     
@@ -2318,7 +2346,7 @@ function showLargeCommercialView(index) {
     // Update play button to open YouTube
     if (commercialPlayButtonLarge) {
         commercialPlayButtonLarge.onclick = () => {
-            window.open(video.url, '_blank');
+            openVideoLink(video.url);
         };
     }
     
@@ -2543,7 +2571,7 @@ function showLargeRealEstateView(index) {
     // Update play button to open YouTube
     if (realEstatePlayButtonLarge) {
         realEstatePlayButtonLarge.onclick = () => {
-            window.open(video.url, '_blank');
+            openVideoLink(video.url);
         };
     }
     
