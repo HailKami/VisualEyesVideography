@@ -574,6 +574,7 @@ function showThumbnailView() {
 
 // Show large image view
 function showLargeImageView(index) {
+    if (totalImages === 0) return;
     isLargeView = true;
     currentImageIndex = index;
     if (modalThumbnails) modalThumbnails.style.display = 'none';
@@ -595,13 +596,13 @@ function showImage(index) {
 }
 
 function nextImage() {
-    if (!isLargeView) return;
+    if (!isLargeView || totalImages === 0) return;
     currentImageIndex = (currentImageIndex + 1) % totalImages;
     showImage(currentImageIndex);
 }
 
 function prevImage() {
-    if (!isLargeView) return;
+    if (!isLargeView || totalImages === 0) return;
     currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages;
     showImage(currentImageIndex);
 }
