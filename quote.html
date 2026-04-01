@@ -429,6 +429,8 @@
                     <strong>⚠️ Important:</strong> This is an estimated quote based on the information provided. Final pricing may vary based on specific requirements, location accessibility, equipment needs, and project complexity. This quote is valid for 30 days. For a final quote, please contact us directly at jordandp1993@gmail.com or call 340-998-1720.
                 </div>
 
+                <p id="quoteEmailNotice" style="display: none;" aria-live="polite"></p>
+
                 <div class="quote-actions">
                     <button onclick="window.print()" class="btn-print">Print Quote</button>
                     <button onclick="resetQuote()" class="btn-back">Request Another Quote</button>
@@ -460,6 +462,15 @@
             </div>
         </div>
     </footer>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init('hBjZbzoCnVuDUn-Sx');
+            }
+        });
+    </script>
 
     <script>
         // Mobile Menu Toggle
@@ -858,6 +869,50 @@
         const quoteForm = document.getElementById('quoteForm');
         const quoteDisplay = document.getElementById('quoteDisplay');
 
+        function sendQuoteToEmail(formData, quote, serviceLabel) {
+            if (typeof emailjs === 'undefined' || typeof emailjs.send !== 'function') {
+                console.error('EmailJS not loaded; quote not emailed.');
+                return Promise.reject(new Error('EmailJS unavailable'));
+            }
+            const breakdownText = quote.breakdown.map(function(item) {
+                return item.item + ': $' + item.amount.toLocaleString() + ' (' + item.rate + ')';
+            }).join('\n');
+            const budgetSelect = document.getElementById('budget');
+            const budgetLabel = budgetSelect && budgetSelect.selectedOptions[0]
+                ? budgetSelect.selectedOptions[0].text
+                : (formData.budget || 'Not specified');
+            const complexitySelect = document.getElementById('complexity');
+            const complexityLabel = complexitySelect && complexitySelect.selectedOptions[0]
+                ? complexitySelect.selectedOptions[0].text
+                : formData.complexity;
+            const messageParts = [
+                '--- Quote generated on website ---',
+                'Estimated total: $' + quote.total.toLocaleString(),
+                '',
+                'Service: ' + serviceLabel,
+                'Project date: ' + (formData.eventDate ? new Date(formData.eventDate).toLocaleDateString() : 'TBD'),
+                'Location: ' + formData.location,
+                'Budget range: ' + budgetLabel,
+                'Complexity: ' + complexityLabel,
+                'Hours / locations: ' + (formData.hours || 'N/A'),
+                formData.clientCompany ? 'Company: ' + formData.clientCompany : '',
+                '',
+                'Additional requirements:',
+                formData.requirements.trim() ? formData.requirements.trim() : '(none)',
+                '',
+                'Line items:',
+                breakdownText
+            ].filter(function(line) { return line !== ''; });
+            const templateParams = {
+                name: formData.clientName.trim(),
+                email: formData.clientEmail.trim(),
+                phone: formData.clientPhone.trim(),
+                service: 'Quote request: ' + serviceLabel,
+                message: messageParts.join('\n')
+            };
+            return emailjs.send('service_h5il5h7', 'template_9tgd17r', templateParams);
+        }
+
         quoteForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -877,11 +932,11 @@
             
             // Calculate quote
             const quote = calculateQuote(formData);
+            const serviceLabel = document.getElementById('serviceType').selectedOptions[0].text;
             
             // Display quote
             document.getElementById('quoteClientName').textContent = formData.clientName;
-            document.getElementById('quoteServiceType').textContent = 
-                document.getElementById('serviceType').selectedOptions[0].text;
+            document.getElementById('quoteServiceType').textContent = serviceLabel;
             document.getElementById('quoteDate').textContent = 
                 formData.eventDate ? new Date(formData.eventDate).toLocaleDateString() : 'TBD';
             document.getElementById('quoteLocation').textContent = formData.location;
@@ -908,11 +963,38 @@
             // Show quote and scroll to it
             quoteDisplay.classList.add('active');
             quoteDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            var notice = document.getElementById('quoteEmailNotice');
+            if (notice) {
+                notice.style.display = 'none';
+                notice.textContent = '';
+            }
+            sendQuoteToEmail(formData, quote, serviceLabel)
+                .then(function() {
+                    if (notice) {
+                        notice.style.display = 'block';
+                        notice.style.cssText = 'display:block;margin-top:1rem;padding:0.85rem 1rem;background:#e8f8f5;color:#1a5c4a;border-radius:8px;font-size:0.95rem;text-align:center;';
+                        notice.textContent = 'We emailed this quote to our team — we\'ll follow up soon.';
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Quote email failed:', err);
+                    if (notice) {
+                        notice.style.display = 'block';
+                        notice.style.cssText = 'display:block;margin-top:1rem;padding:0.85rem 1rem;background:#fff3cd;color:#664d03;border-radius:8px;font-size:0.95rem;text-align:center;';
+                        notice.textContent = 'Your quote is shown above. If you don\'t hear from us, call 340-998-1720 or email us directly.';
+                    }
+                });
         });
 
         function resetQuote() {
             quoteDisplay.classList.remove('active');
             quoteForm.reset();
+            var notice = document.getElementById('quoteEmailNotice');
+            if (notice) {
+                notice.style.display = 'none';
+                notice.textContent = '';
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
