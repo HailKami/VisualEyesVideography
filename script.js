@@ -124,6 +124,7 @@ const shortFilmVideos = [
 
 // Event Videos - Video data (titles will be fetched from YouTube)
 const eventVideos = [
+    { id: 'D1zY9ySP9gU', url: 'https://youtu.be/D1zY9ySP9gU?si=Fx_lFdIfZdcYuyAD', song: 'Loading...', artist: '' },
     { id: 'CwYaGIrvJSA', url: 'https://www.youtube.com/watch?v=CwYaGIrvJSA', song: 'Loading...', artist: '' },
     { id: 'QOyuU3KC3gM', url: 'https://www.youtube.com/watch?v=QOyuU3KC3gM', song: 'Loading...', artist: '' }
 ];
@@ -1352,11 +1353,21 @@ function generateEventThumbnails() {
             thumbnailDiv.className = 'thumbnail-item video-thumbnail';
             thumbnailDiv.setAttribute('data-index', index);
             const displayTitle = video.song || 'Loading...';
+
+            let thumbnailImg = '';
+            if (video.customThumbnail) {
+                thumbnailImg = `<img src="${video.customThumbnail}" alt="${displayTitle}" loading="lazy" onerror="this.onerror=null; this.src='https://img.youtube.com/vi/CwYaGIrvJSA/hqdefault.jpg';">`;
+            } else if (video.type === 'facebook') {
+                thumbnailImg = `<img src="https://img.youtube.com/vi/CwYaGIrvJSA/maxresdefault.jpg" alt="${displayTitle}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/CwYaGIrvJSA/hqdefault.jpg'" style="opacity: 0.7;">`;
+            } else {
+                thumbnailImg = `<img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">`;
+            }
+
             thumbnailDiv.innerHTML = `
                 <div class="video-info-overlay">
                     <h4 class="video-song-name">${displayTitle}</h4>
                 </div>
-                <img src="https://img.youtube.com/vi/${video.id}/maxresdefault.jpg" alt="${displayTitle}" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                ${thumbnailImg}
                 <div class="play-icon">▶</div>
             `;
             eventThumbnailGrid.appendChild(thumbnailDiv);
@@ -1376,6 +1387,11 @@ function generateEventThumbnails() {
 // Fetch event video titles from YouTube oEmbed API
 async function fetchEventTitles() {
     const promises = eventVideos.map(async (video, index) => {
+        if (video.type === 'facebook') {
+            updateEventTitle(index, video.song);
+            return;
+        }
+
         try {
             let oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(video.url)}&format=json`;
             let response;
@@ -1460,14 +1476,31 @@ function showLargeEventView(index) {
     // Update video info
     if (eventVideoTitle) eventVideoTitle.textContent = video.song;
     if (eventLargeThumbnail) {
-        eventLargeThumbnail.src = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
-        eventLargeThumbnail.onerror = function() {
-            this.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
-        };
+        if (video.customThumbnail) {
+            eventLargeThumbnail.src = video.customThumbnail;
+            eventLargeThumbnail.onerror = function() {
+                this.onerror = null;
+                this.src = 'https://img.youtube.com/vi/CwYaGIrvJSA/hqdefault.jpg';
+            };
+        } else if (video.type === 'facebook') {
+            eventLargeThumbnail.src = 'https://img.youtube.com/vi/CwYaGIrvJSA/maxresdefault.jpg';
+            eventLargeThumbnail.onerror = function() {
+                this.src = 'https://img.youtube.com/vi/CwYaGIrvJSA/hqdefault.jpg';
+            };
+        } else {
+            eventLargeThumbnail.src = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+            eventLargeThumbnail.onerror = function() {
+                this.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+            };
+        }
     }
-    
-    // Update play button to open YouTube
+
+    // Update play button to open video link
     if (eventPlayButtonLarge) {
+        const playText = eventPlayButtonLarge.querySelector('.play-text');
+        if (playText) {
+            playText.textContent = video.type === 'facebook' ? 'Watch on Facebook' : 'Watch on YouTube';
+        }
         eventPlayButtonLarge.onclick = () => {
             openVideoLink(video.url);
         };
