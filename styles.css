@@ -428,6 +428,61 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 4rem;
 }
 
+.community-spotlight {
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.community-spotlight-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.community-spotlight p {
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+
+.community-spotlight-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.community-spotlight-item {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+}
+
+.community-spotlight-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+.community-spotlight-item figcaption {
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+    .community-spotlight-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
