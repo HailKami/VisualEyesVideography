@@ -154,6 +154,8 @@ const documentaryVideos = [
 const musicVideos = [
     { id: 'eXuQdNSxOTA', url: 'https://youtu.be/eXuQdNSxOTA', song: 'Loading...', artist: '' },
     { id: 's8hkedOmvZ8', url: 'https://www.youtube.com/watch?v=s8hkedOmvZ8', song: 'Loading...', artist: '' },
+    { id: 'uxy74RXB9_8', url: 'https://www.youtube.com/watch?v=uxy74RXB9_8', song: 'Loading...', artist: '' },
+    { id: 'LD7h2CvzzFM', url: 'https://www.youtube.com/watch?v=LD7h2CvzzFM', song: 'Loading...', artist: '' },
     { id: '172qoG9kvA', url: 'https://www.facebook.com/share/v/172qoG9kvA/', song: 'MiChondè - Stress Who? (Official Music Video)', artist: '', type: 'facebook', customThumbnail: 'stress.png?v=1' },
     { id: 'qQM0r7xCBzI', url: 'https://www.youtube.com/watch?v=qQM0r7xCBzI', song: 'Loading...', artist: '' },
     { id: 'XbxJbqS_0f0', url: 'https://www.youtube.com/watch?v=XbxJbqS_0f0', song: 'Loading...', artist: '' },
