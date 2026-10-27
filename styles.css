@@ -1756,6 +1756,10 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 2rem;
     }
 
+    .services {
+        padding: 70px 0;
+    }
+
     .services-grid {
         grid-template-columns: 1fr;
     }
