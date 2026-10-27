@@ -380,6 +380,99 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
 }
 
+.trusted-by {
+    margin-bottom: 3.5rem;
+}
+
+.trusted-by-label {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 1.75rem;
+}
+
+.trusted-by-marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.trusted-by-track {
+    display: flex;
+    width: max-content;
+    animation: trusted-by-scroll 28s linear infinite;
+}
+
+.trusted-by-marquee:hover .trusted-by-track {
+    animation-play-state: paused;
+}
+
+.trusted-by-set {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    padding: 0 2.5rem;
+    flex-shrink: 0;
+}
+
+.trusted-by-set img {
+    height: 52px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(1.05);
+    opacity: 0.9;
+    transition: filter 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
+}
+
+.trusted-by-set img.trusted-by-logo-wide {
+    max-width: 200px;
+    height: 44px;
+}
+
+.trusted-by-set img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+@keyframes trusted-by-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .trusted-by-marquee {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .trusted-by-track {
+        animation: none;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    .trusted-by-set[aria-hidden="true"] {
+        display: none;
+    }
+
+    .trusted-by-set {
+        padding: 0;
+        gap: 3rem;
+    }
+}
+
 .about-content {
     max-width: 900px;
     margin: 0 auto;
