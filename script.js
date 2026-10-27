@@ -2453,3 +2453,94 @@ if (document.readyState === 'loading') {
     generateCommercialThumbnails();
     fetchCommercialTitles();
 }
+
+// Google reviews rotator — pop in, fade out
+(function initReviewsRotator() {
+    const stage = document.getElementById('reviewsStage');
+    if (!stage) return;
+
+    const cards = Array.from(stage.querySelectorAll('.review-card'));
+    if (cards.length < 2) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DISPLAY_MS = 5500;
+    const TRANSITION_MS = 600;
+    let index = cards.findIndex((card) => card.classList.contains('is-active'));
+    if (index < 0) {
+        index = 0;
+        cards[0].classList.add('is-active');
+    }
+
+    let intervalId = null;
+    let transitionLock = false;
+
+    function setStageHeight() {
+        const active = stage.querySelector('.review-card.is-active');
+        if (!active) return;
+        stage.style.minHeight = `${active.offsetHeight}px`;
+    }
+
+    function goTo(nextIndex) {
+        if (transitionLock || nextIndex === index) return;
+        transitionLock = true;
+
+        const current = cards[index];
+        const next = cards[nextIndex];
+
+        current.classList.remove('is-active');
+        current.classList.add('is-leaving');
+
+        next.classList.add('is-active');
+        index = nextIndex;
+
+        const finish = () => {
+            current.classList.remove('is-leaving');
+            transitionLock = false;
+            setStageHeight();
+        };
+
+        if (prefersReducedMotion) {
+            current.classList.remove('is-leaving');
+            transitionLock = false;
+            setStageHeight();
+            return;
+        }
+
+        current.addEventListener(
+            'animationend',
+            (e) => {
+                if (e.animationName === 'reviewFadeOut') finish();
+            },
+            { once: true }
+        );
+
+        setTimeout(finish, TRANSITION_MS + 80);
+    }
+
+    function advance() {
+        goTo((index + 1) % cards.length);
+    }
+
+    function start() {
+        stop();
+        intervalId = window.setInterval(advance, DISPLAY_MS);
+    }
+
+    function stop() {
+        if (intervalId !== null) {
+            window.clearInterval(intervalId);
+            intervalId = null;
+        }
+    }
+
+    setStageHeight();
+    window.addEventListener('resize', setStageHeight);
+
+    if (prefersReducedMotion) return;
+
+    start();
+    stage.addEventListener('mouseenter', stop);
+    stage.addEventListener('mouseleave', start);
+    stage.addEventListener('focusin', stop);
+    stage.addEventListener('focusout', start);
+})();
